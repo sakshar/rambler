@@ -71,3 +71,8 @@ The final assembly will be generated in a file named `rambler.fasta` inside `out
 `bash run.sh -r ../data/10.fasta -u ../data/10.kmers -o ../output -s 150000`  
 
 This will create an output directory `rambler/output` and the final assembly will be in `rambler/output/assembly/rambler.fasta`.
+
+# Citation
+- Sakshar Chakravarty, Glennis Logsdon, Stefano Lonardi. RAmbler: de novo genome assembly of complex repetitive regions. bioRxiv 2023.05.26.542525; doi: https://doi.org/10.1101/2023.05.26.542525
+or
+- Sakshar Chakravarty, Glennis Logsdon, and Stefano Lonardi. 2023. RAmbler: de novo genome assembly of complex repetitive regions. In 14th ACM International Conference on Bioinformatics, Computational Biology and Health Informatics (BCB ’23), September 3–6, 2023, Houston, TX, USA. ACM, New York, NY, USA, 1 page. https://doi.org/10.1145/3584371.3612971
