@@ -30,7 +30,7 @@ THREADS=20
 OUT_DIR="path_to_output_directory"
 H=$OUT_DIR/hifi #HIFI
 
-# mkdir $OUT_DIR
+mkdir -p $OUT_DIR
 
 # ------- INDEX THE REFERENCE
 bwa index $REF
@@ -52,8 +52,8 @@ python3 $NUCPLOT/NucPlot.py -w 32 $H.sorted.nosecondary.bam $H.png
 
 # # ------- SPECIFICATION
 # CONTIG="id_of_the_contig_containing_unresolved_repeats"
-# START="start_index_in_the_sequence_for_read_extraction"
-# END="end_index_in_the_sequence_for_read_extraction"
+# START="start_index_in_the_reference_sequence_for_read_extraction"
+# END="end_index_in_the_reference_sequence_for_read_extraction"
 
 # # ------- OUTPUT
 # EXTRACTED_BAM="path_to_bam_file_for_selected_region_with_repeats"
