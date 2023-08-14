@@ -36,3 +36,32 @@ If you don't have them, then first execute `mapReads.sh` by providing the curren
 
 # Execution
 
+Open the terminal and follow the steps below to run RAmbler from scratch:
+<pre>
+  cd ~
+  git clone https://github.com/sakshar/rambler.git
+  git clone https://github.com/mrvollger/NucFreq.git
+</pre>
+
+Modify all the required file paths according to your local file system. We have provided a test dataset inside `data` directory:  
+`data/10.fasta` contains the HiFi reads generated with a 10x coverage depth  
+`data/10.kmers` contains the unikmers  
+`data/10000_5_100.fasta` contains the true reference genome for the above HiFi reads and unikmers. It contains 5 copies of a 10 Kb repeat unit with a mutation rate of 1 per 100 bases along with 50 Kb upstream and downstream flanking regions  
+
+Always run RAmbler from inside the `rambler/scripts` directory. So, to run RAmbler directly when you have the required HiFi reads and unikmers, execute the following command:
+<pre>
+  cd ~
+  cd rambler/scripts
+  bash run.sh -r read_file -u unikmer_file -o output_directory -s assembly_length [-k kmer_length] [-l tolerance] [-h threshold]
+  required:
+  -r path to the fasta file containing the HiFi reads
+  -u path to the file containing the list of unikmers
+  -o path to the directory where RAmbler will put all the generated outputs
+  -s estimated length of the repeat resolved genome
+  optional:
+  -k length of kmers used (default: 21)
+  -l tolerance parameter (default: 15)
+  -h threshold parameter (default: 15)
+</pre>
+
+The final assembly will be generated in a file named `rambler.fasta` inside `output_directory/assembly` directory.
