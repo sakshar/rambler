@@ -2,11 +2,16 @@
 # rm *.amb *.ann *.bwt *.pac *.sa *.fai
 # ------- PRE-REQUISITES
 # Install the following packages in your conda environment before running this script
-# bwa, samtools, minimap2 (channel: bioconda)
+# bwa, samtools, minimap2, pysam (channel: bioconda), numpy, pandas, matplotlib, seaborn (channel: conda-forge)
 # commands to install them:
 # conda install -c bioconda bwa
 # conda install -c bioconda samtools
 # conda install -c bioconda minimap2
+# conda install -c bioconda pysam
+# conda install -c conda-forge numpy
+# conda install -c conda-forge pandas
+# conda install -c conda-forge matplotlib
+# conda install -c conda-forge seaborn
 
 # It requires the following GitHub repository available for visualizing the coverage plot
 # https://github.com/mrvollger/NucFreq
@@ -24,6 +29,8 @@ THREADS=20
 # ------- OUTPUT
 OUT_DIR="path_to_output_directory"
 H=$OUT_DIR/hifi #HIFI
+
+# mkdir $OUT_DIR
 
 # ------- INDEX THE REFERENCE
 bwa index $REF

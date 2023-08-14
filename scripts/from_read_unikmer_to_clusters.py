@@ -1,7 +1,6 @@
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from Bio import AlignIO
 import csv
 import numpy as np
 import sys
