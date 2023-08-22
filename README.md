@@ -9,7 +9,7 @@ Create a conda environment first:
 
 `conda create -n rambler python=3.8 numpy pandas matplotlib seaborn xlsxwriter biopython`
 
-This will create a conda environment named rambler with the afforementioned packages. Then activate the environment with:
+This will create a conda environment named rambler with the afforementioned packages. Please make sure that the version of `biopython >= 1.81`. An older version may behave unpredictably. Then activate the environment with:
 
 `conda activate rambler`
 
