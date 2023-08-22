@@ -3,7 +3,7 @@
 This repository is a stand-alone copy of RAmbler. Anyone can run RAmbler locally in their machines just by cloning this.
 
 # Pre-requisites
-You will need conda installed in your machine to proceed. If you don't have conda installed, please follow [conda installation](https://conda.io/docs/user-guide/install/).
+You will need conda installed in your machine to proceed. If you don't have conda installed, please follow [conda installation](https://conda.io/docs/user-guide/install/). If you already had it installed, please make sure it is updated.
 
 Create a conda environment first:
 
