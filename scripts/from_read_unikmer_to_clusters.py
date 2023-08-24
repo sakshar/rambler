@@ -114,16 +114,48 @@ def get_unikmer_to_read_map(infile):
     return unikmer_to_read_map
 
 
+# older version of get_pairwise_profiles method
+# def get_pairwise_profiles(unikmer_to_read_map, read_to_unikmer_map, read_to_unikmer_list, read_to_unikmerpos_map, tolerance):
+#     pairwise_profiles = dict()
+#     unikmers = unikmer_to_read_map.keys()
+#     count = 0
+#     for unikmer in unikmers:
+#         reads = list(unikmer_to_read_map[unikmer].keys())
+#         for i in range(len(reads)):
+#             r1 = reads[i]
+#             for j in range(i+1, len(reads)):
+#                 r2 = reads[j]
+#                 pos1, pos2 = read_to_unikmer_map[r1][unikmer], read_to_unikmer_map[r2][unikmer]
+#                 pairwise_profiles[(r1, r2)] = [(unikmer, pos1, pos2)]
+#                 unikmer_index1, unikmer_index2 = read_to_unikmerpos_map[r1][pos1], read_to_unikmerpos_map[r2][pos2]
+#                 r1_list, r2_list = read_to_unikmer_list[r1], read_to_unikmer_list[r2]
+#                 while unikmer_index1 + 1 < len(r1_list) and unikmer_index2 + 1 < len(r2_list):
+#                     u1, u2 = r1_list[unikmer_index1+1][0], r2_list[unikmer_index2+1][0]
+#                     delta1, delta2 = r1_list[unikmer_index1+1][1] - pos1, r2_list[unikmer_index2+1][1] - pos2
+#                     if u1 == u2 and delta1 - tolerance <= delta2 <= delta1 + tolerance:
+#                         unikmer_index1 += 1
+#                         unikmer_index2 += 1
+#                         pos1, pos2 = r1_list[unikmer_index1][1], r2_list[unikmer_index2][1]
+#                         pairwise_profiles[(r1, r2)] += [(u1, pos1, pos2)]
+#                     else:
+#                         break
+#         count += 1
+#     return pairwise_profiles
+
+
+# newer version of get_pairwise_profiles method
 def get_pairwise_profiles(unikmer_to_read_map, read_to_unikmer_map, read_to_unikmer_list, read_to_unikmerpos_map, tolerance):
     pairwise_profiles = dict()
-    unikmers = unikmer_to_read_map.keys()
+    reads = list(read_to_unikmer_map.keys())
     count = 0
-    for unikmer in unikmers:
-        reads = list(unikmer_to_read_map[unikmer].keys())
-        for i in range(len(reads)):
-            r1 = reads[i]
-            for j in range(i+1, len(reads)):
-                r2 = reads[j]
+    for i in range(len(reads)):
+        r1 = reads[i]
+        r1_unikmers = set(read_to_unikmer_map[r1].keys())
+        for j in range(i+1, len(reads)):
+            r2 = reads[j]
+            r2_unikmers = set(read_to_unikmer_map[r2].keys())
+            intersection = r1_unikmers & r2_unikmers
+            for unikmer in intersection:
                 pos1, pos2 = read_to_unikmer_map[r1][unikmer], read_to_unikmer_map[r2][unikmer]
                 pairwise_profiles[(r1, r2)] = [(unikmer, pos1, pos2)]
                 unikmer_index1, unikmer_index2 = read_to_unikmerpos_map[r1][pos1], read_to_unikmerpos_map[r2][pos2]
@@ -138,7 +170,20 @@ def get_pairwise_profiles(unikmer_to_read_map, read_to_unikmer_map, read_to_unik
                         pairwise_profiles[(r1, r2)] += [(u1, pos1, pos2)]
                     else:
                         break
-        count += 1
+                pos1, pos2 = read_to_unikmer_map[r1][unikmer], read_to_unikmer_map[r2][unikmer]
+                unikmer_index1, unikmer_index2 = read_to_unikmerpos_map[r1][pos1], read_to_unikmerpos_map[r2][pos2]
+                while unikmer_index1 - 1 >= 0 and unikmer_index2 - 1 >= 0:
+                    u1, u2 = r1_list[unikmer_index1-1][0], r2_list[unikmer_index2-1][0]
+                    delta1, delta2 = r1_list[unikmer_index1-1][1] - pos1, r2_list[unikmer_index2-1][1] - pos2
+                    if u1 == u2 and delta1 - tolerance <= delta2 <= delta1 + tolerance:
+                        unikmer_index1 -= 1
+                        unikmer_index2 -= 1
+                        pos1, pos2 = r1_list[unikmer_index1][1], r2_list[unikmer_index2][1]
+                        pairwise_profiles[(r1, r2)] = [(u1, pos1, pos2)] + pairwise_profiles[(r1, r2)]
+                    else:
+                        break
+                count += 1
+                break
     return pairwise_profiles
 
 
