@@ -78,7 +78,7 @@ done
 # EXTRACTED_FASTA="path_to_fasta_file_with_reads_from_selected_region_with_repeats"
 
 # # extracting and then converting bam to fastq and finally to fasta
-# samtools index $H.sorted.bam
-# samtools view -b $H.sorted.bam "$CONTIG:$START-$END" > $EXTRACTED_BAM.bam
+# samtools index $Q.sorted.bam
+# samtools view -b $Q.sorted.bam "$CONTIG:$START-$END" > $EXTRACTED_BAM.bam
 # samtools fastq $EXTRACTED_BAM.bam > $EXTRACTED_FASTQ.fq
 # cat $EXTRACTED_FASTQ.fq | awk '{if(NR%4==1) {printf(">%s\n",substr($0,2));} else if(NR%4==2) print;}' > $EXTRACTED_FASTA.fasta
