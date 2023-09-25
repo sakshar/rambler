@@ -22,6 +22,7 @@ conda install -c bioconda bwa
 conda install -c bioconda samtools
 conda install -c bioconda pysam
 conda install -c bioconda hifiasm
+conda install -c bioconda seqkit
 </pre>
 
 Currently, RAmbler only takes reads in `.fasta` format. If you have the reads in a different file format, please convert them to `.fasta` before executing the assembly pipeline.
@@ -31,9 +32,11 @@ Currently, RAmbler only takes reads in `.fasta` format. If you have the reads in
 `mapReads.sh` contains the required commands to perform step A (Determine the reads corresponding to repetitive regions)  
 `extractUnikmers.sh` contains the required commands to perform step B (Determine unikmers)  
 `run.sh` contains the required commands to execute RAmbler's steps C, D, E and F (the assembly pipeline)  
+`stitch.sh` contains the required commands to stitch the repeat resolved assembly back to the original draft/reference genome
 
 If you already have the HiFi reads corresponding to the repetitive regions and the unikmers, directly execute `run.sh` to obtain the repeat resolved assembly.  
-If you don't have them, then first execute `mapReads.sh` by providing the current draft genome and the complete set of HiFi reads to it. Follow the detailed steps mentioned in `mapReads.sh` to extract reads mapping to the repetitive regions. For executing `mapReads.sh`, you will also need a local copy of [NucFreq](https://github.com/mrvollger/NucFreq). Next, for extracting the unikmers, execute `extractUnikmers.sh`. Follow the detailed instructions mentioned in `extractUnikmers.sh`.
+If you don't have them, then first execute `mapReads.sh` by providing the current draft genome and the complete set of HiFi reads to it. Follow the detailed steps mentioned in `mapReads.sh` to extract reads mapping to the repetitive regions. For executing `mapReads.sh`, you will also need a local copy of [NucFreq](https://github.com/mrvollger/NucFreq). Next, for extracting the unikmers, execute `extractUnikmers.sh`. Follow the detailed instructions mentioned in `extractUnikmers.sh`.  
+If you have already executed `run.sh` and obtained the repeat resolved assembly, execute `stitch.sh` to merge the newly reconstructed repeats with the draft genome.
 
 # Execution
 
@@ -58,20 +61,36 @@ Always run RAmbler from inside the `rambler/scripts` directory. So, to run RAmbl
   -r path to the fasta file containing the HiFi reads
   -u path to the file containing the list of unikmers
   -o path to the directory where RAmbler will put all the generated outputs
-  -s estimated length of the repeat resolved genome in bp
+  -s estimated length of the repeat resolved part of the genome in bp
   optional:
   -k length of kmers used (default: 21)
   -l tolerance parameter (default: 15)
   -h threshold parameter (default: 15)
 </pre>
 
-The final assembly will be generated in a file named `rambler.fasta` inside `output_directory/assembly` directory.
+The repeat resolved assembly will be generated in a file named `rambler.fasta` inside `output_directory/assembly` directory.
+
+Next, execute the following command to merge `rambler.fasta` with the draft reference genome for obtaining the final assembly:
+<pre>
+  bash stitch.sh -g draft_genome_file -n contig_id -b start_position -e end_position -o output_directory -s contig_length
+  required:
+  -g path to the fasta file containing the draft/reference genome
+  -n id of the contig that is being re-assembled
+  -b approximate start position of the repeat region in the contig sequence from the draft genome
+  -e approximate end position of the repeat region in the contig sequence from the draft genome
+  -o path to the directory where RAmbler will put all the generated outputs (always put the same one as run.sh)
+  -s estimated length of the repeat resolved contig in bp
+</pre>
 
 # Example run
 
 `bash run.sh -r ../data/10.fasta -u ../data/10.kmers -o ../output -s 150000`  
 
-This will create an output directory `rambler/output` and the final assembly will be in `rambler/output/assembly/rambler.fasta`.
+This will create an output directory `rambler/output` and the reconstruced repeats will be in `rambler/output/assembly/rambler.fasta`.
+
+`bash stitch.sh -g ../data/10000_5_100.fasta -n draft -b 50000 -e 100000 -o ../output -s 150000`
+
+This will create a sub-directory `final` inside the previously created output directory `rambler/output` and the repeat reconstructed contig will be in `rambler/output/final/rambler_merged.fasta`.
 
 # Citation
 - Sakshar Chakravarty, Glennis Logsdon, Stefano Lonardi. RAmbler: de novo genome assembly of complex repetitive regions. bioRxiv 2023.05.26.542525; doi: https://doi.org/10.1101/2023.05.26.542525  
