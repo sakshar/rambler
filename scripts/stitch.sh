@@ -31,7 +31,7 @@ while getopts "g:n:b:e:o:s:" opt; do
 	  REF_SIZE="$OPTARG"
 	  ;;
     \?)
-      echo "Usage: $0 -g draft_genome_file -n contig_id -b start_position -e end_position -o output_directory -s assembly_length"
+      echo "Usage: $0 -g draft_genome_file -n contig_id -b start_position -e end_position -o output_directory -s contig_length"
       exit 1
       ;;
   esac
