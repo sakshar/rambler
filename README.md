@@ -58,8 +58,8 @@ Always run RAmbler from inside the `rambler/scripts` directory. So, to run RAmbl
   cd rambler/scripts
   bash run.sh -r read_file -u unikmer_file -o output_directory -s assembly_length [-k kmer_length] [-l tolerance] [-h threshold]
   required:
-  -r path to the fasta file containing the HiFi reads
-  -u path to the file containing the list of unikmers
+  -r path to the fasta file containing the HiFi reads extracted in step A
+  -u path to the file containing the list of unikmers extracted in step B
   -o path to the directory where RAmbler will put all the generated outputs
   -s estimated length of the repeat resolved part of the genome in bp
   optional:
