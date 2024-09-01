@@ -97,5 +97,10 @@ This will create a sub-directory `final` inside the previously created output di
 or
 - Sakshar Chakravarty, Glennis Logsdon, and Stefano Lonardi. 2023. RAmbler: de novo genome assembly of complex repetitive regions. In 14th ACM International Conference on Bioinformatics, Computational Biology and Health Informatics (BCB ’23), September 3–6, 2023, Houston, TX, USA. ACM, New York, NY, USA, 1 page. https://doi.org/10.1145/3584371.3612971 
 
+# FAQs
+1. How to calculate the lower and upper bounds of the window for extracting unikmers from the generated excel file?
+
+While calculating for the mean and the standard deviation from the excel file, please ignore the first 5 rows (which are mostly k-mers due to sequencing errors) and also ignore the k-mers that appear way higher than the expected coverage depth (suppose, if the expected coverage depth is 100x, ignore rows after row 250). For example, with a read set having a coverage depth of 100x, try to calculate the mean and the standard deviation with values from rows 6 to 250. This is a trick required to discard k-mers coming from sequencing errors and the k-mers which appear way higher than expected that can throw the values of mean and standard deviation way off.
+
 # TODO
 A stand-alone conda package for RAmbler with a single command execution feature
