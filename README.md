@@ -76,8 +76,8 @@ Next, execute the following command to merge `rambler.fasta` with the draft refe
   required:
   -g path to the fasta file containing the draft/reference genome
   -n id of the contig that is being re-assembled
-  -b approximate start position of the repeat region in the contig sequence from the draft genome
-  -e approximate end position of the repeat region in the contig sequence from the draft genome
+  -b approximate start position of the repeat region in the contig sequence from the draft genome (if stitching at the end, put -1)
+  -e approximate end position of the repeat region in the contig sequence from the draft genome (if stitching at the beginning, put -1)
   -o path to the directory where RAmbler will put all the generated outputs (always put the same one as run.sh)
   -s estimated length of the repeat resolved contig in bp
 </pre>
