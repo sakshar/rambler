@@ -71,9 +71,18 @@ FINAL=$OUT_DIR/final
 
 mkdir -p $FINAL
 
-seqkit subseq -r 1:$start --chr $CONTIG_ID $REF_FILE > $FINAL/start.fasta
-seqkit subseq -r $end:-1 --chr $CONTIG_ID $REF_FILE > $FINAL/end.fasta
-cat $FINAL/start.fasta $ASSEMBLY/rambler.fasta $FINAL/end.fasta > $FINAL/combined.fasta
+if [ "$start" -eq "-1" ]; then
+    seqkit subseq -r $end:-1 --chr $CONTIG_ID $REF_FILE > $FINAL/end.fasta
+    cat $ASSEMBLY/rambler.fasta $FINAL/end.fasta > $FINAL/combined.fasta
+elif [ "$end" -eq "-1" ]; then
+    seqkit subseq -r 1:$start --chr $CONTIG_ID $REF_FILE > $FINAL/start.fasta
+    cat $FINAL/start.fasta $ASSEMBLY/rambler.fasta > $FINAL/combined.fasta
+else
+    seqkit subseq -r 1:$start --chr $CONTIG_ID $REF_FILE > $FINAL/start.fasta
+    seqkit subseq -r $end:-1 --chr $CONTIG_ID $REF_FILE > $FINAL/end.fasta
+    cat $FINAL/start.fasta $ASSEMBLY/rambler.fasta $FINAL/end.fasta > $FINAL/combined.fasta
+fi
+
 minimap2 -x ava-pb $FINAL/combined.fasta $FINAL/combined.fasta > $FINAL/merge_overlaps.paf
 
 python3 ./from_rambler_to_merged.py $OUT_DIR $REF_SIZE
