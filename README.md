@@ -102,7 +102,7 @@ or
 
 While calculating for the mean and the standard deviation from the excel file, please ignore the first 5 rows (which are mostly k-mers due to sequencing errors) and also ignore the k-mers that appear way higher than the expected coverage depth (suppose, if the expected coverage depth is 100x, ignore rows after row 250). For example, with a read set having a coverage depth of 100x, try to calculate the mean and the standard deviation with values from rows 6 to 250. This is a trick required to discard k-mers coming from sequencing errors and the k-mers which appear way higher than expected that can throw the values of mean and standard deviation way off.
 
-Note: the scripts, `freq_distribution_kmers.py` and `extract_unikmers.sh`, have been updated to fully automate step B for the extraction of unikmers
+Note: the scripts, `freq_distribution_kmers.py` and `extractUnikmers.sh`, have been updated to fully automate step B for the extraction of unikmers
 
 # TODO
 A stand-alone conda package for RAmbler with a single command execution feature
