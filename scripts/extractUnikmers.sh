@@ -22,12 +22,15 @@ jellyfish histo -o $OUT_HISTO -v $OUT_COUNT
 # the python script generates an excel (.xlsx) file to visualize the distribution
 # using this excel file, you can find out the [mean - 3*sd, mean + 3*sd] window
 # containing the expected unikmers
-python3 ./freq_distribution_kmers.py $OUT_HISTO $OUT_XCEL
+# the python script also outputs the calculated mean, sd, lower bound and upper bound
+# values from the input distribution file
+OUTPUT=$(python3 ./freq_distribution_kmers.py $OUT_HISTO $OUT_XCEL)
 
+echo $OUTPUT
 
-# only after calculating the mean and sd from the excel file, run the following command
-# to get the final list of expected unikmers
+# extract the lower and upper bound values from the output
+lower=$(echo "$OUTPUT" | sed -n '2p' | cut -d':' -f2 | xargs)
+upper=$(echo "$OUTPUT" | sed -n '3p' | cut -d':' -f2 | xargs)
 
-# lower="put round(mean - 3*sd) here as expects an integer value"
-# upper="put round(mean + 3*sd) here as expects an integer value"
-# jellyfish dump -c -t -L $lower -U $upper $OUT_COUNT | awk '{print $1}' > $UNIKMERS
+# extract the unikmers using the lower and upper bound values
+jellyfish dump -c -t -L $lower -U $upper $OUT_COUNT | awk '{print $1}' > $UNIKMERS
